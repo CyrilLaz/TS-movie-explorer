@@ -1,0 +1,150 @@
+.about-project {
+  margin: 110px auto;
+  width: calc(1140 / 1280 * 100%);
+  max-width: 1140px;
+  scroll-margin: 50px;
+}
+
+.about-project__header {
+  margin: 0 0 70px;
+}
+
+.about-project__info-list {
+  margin: 0 0 54px;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.about-project__info-item {
+  list-style: none;
+  max-width: 540px;
+  width: 100%;
+  padding-right: 10px;
+}
+
+.about-project__title {
+  margin: 0 0 26px;
+  padding: 0;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.about-project__explanation {
+  margin: 0 0 56px;
+  padding: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #fff;
+}
+
+.about-project__timebar {
+  display: flex;
+}
+
+.about-project__segment {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.about-project__segment:nth-of-type(1) {
+  flex: 1;
+}
+.about-project__segment:nth-of-type(2) {
+  flex: 4;
+}
+
+.about-project__length {
+  padding: 9px 0;
+  margin: 0 0 14px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  background-color: #303030;
+}
+
+.about-project__segment:first-of-type .about-project__length {
+  background-color: #3ddc84;
+  color: #000;
+}
+
+.about-project__name {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #8b8b8b;
+}
+
+@media screen and (max-width: 800px) {
+  .about-project {
+    margin: 90px auto;
+    width: calc(668 / 768 * 100%);
+  }
+  .about-project__title {
+    margin-bottom: 22px;
+  }
+  .about-project__explanation {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .about-project__info-list {
+    margin-bottom: 37px;
+  }
+  .about-project__info-item {
+  max-width: 309px;
+  }
+  .about-project__segment:nth-of-type(1) {
+    min-width: 140px;
+    flex: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .about-project {
+    margin: 70px auto;
+    width: calc(284 / 320 * 100%);
+  }
+
+  .about-project__header {
+    margin-bottom: 60px;
+  }
+
+  .about-project__info-list {
+    flex-direction: column;
+    margin-bottom: 4px;
+  }
+  .about-project__info-item {
+    padding-right: 0;
+  }
+  .about-project__title {
+    margin-bottom: 16px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .about-project__explanation {
+    margin-bottom: 56px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-project__length {
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .about-project__name {
+    font-size: 11px;
+    line-height: 13px;
+  }
+  .about-project__segment:nth-of-type(1) {
+    min-width: 100px;
+    flex: none;
+  }
+}

@@ -1,0 +1,148 @@
+.about-me {
+  margin: 110px auto 125px;
+  width: calc(1140 / 1280 * 100%);
+  max-width: 1140px;
+}
+
+.about-me__header {
+  margin: 0 0 66px;
+}
+
+.about-me__info-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 100px;
+  align-items: stretch;
+}
+
+.about-me__biography {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  padding-right: 10px;
+}
+
+.about-me__name {
+  margin: 0 0 18px;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.about-me__job {
+  margin: 0 0 26px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  color: #fff;
+}
+
+.about-me__info {
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #fff;
+}
+
+.about-me__link {
+  margin: auto 0 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.about-me__photo {
+  width: 270px;
+  border-radius: 10px;
+  object-fit: contain;
+  align-self: flex-start;
+}
+
+@media screen and (max-width: 800px) {
+  .about-me {
+    margin: 90px auto;
+    width: calc(668 / 768 * 100%);
+  }
+
+  .about-me__info-container {
+    margin-bottom: 90px;
+  }
+
+  .about-me__biography {
+    max-width: 364px;
+  }
+
+  .about-me__name {
+    font-size: 40px;
+    line-height: 40px;
+    margin-bottom: 16px;
+  }
+
+  .about-me__job {
+    font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 20px;
+  }
+
+  .about-me__info {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__photo {
+    width: 255px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .about-me {
+    margin: 70px auto;
+    width: calc(292 / 320 * 100%);
+  }
+
+  .about-me__header {
+    margin-bottom: 60px;
+  }
+
+  .about-me__info-container {
+    flex-direction: column-reverse;
+    align-items: center;
+    margin-bottom: 70px;
+  }
+
+  .about-me__photo {
+    max-width: 400px;
+    width: 100%;
+    align-self: center;
+    margin-bottom: 37px;
+  }
+
+  .about-me__biography {
+    padding: 0;
+  }
+  .about-me__name {
+    font-size: 30px;
+    line-height: 36px;
+    margin-bottom: 20px;
+  }
+
+  .about-me__job {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-me__info {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-me__link {
+    margin-top: 40px;
+  }
+}

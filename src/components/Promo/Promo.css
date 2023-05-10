@@ -1,0 +1,156 @@
+@keyframes split {
+  from {
+    transform:translateX(0);
+  }
+  to {
+    transform:translateX(437px); /*width - width*0.05*/
+  }
+}
+
+.promo {
+  margin: 0;
+  background-color: #073042;
+  position: relative;
+}
+
+.promo__container {
+  display: flex;
+  justify-content: space-between;
+  margin: -1px auto 1px;
+  padding-top: 74px;
+  width: calc(1140 / 1280 * 100%);
+  max-width: 1140px;
+}
+
+.promo__presentation {
+  max-width: 640px;
+  width: 100%;
+  margin-bottom: 75px;
+}
+
+.promo__title {
+  margin: 0 0 36px 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  color: #fff;
+}
+
+.promo__subtitle {
+  max-width: 310px;
+  width: 100%;
+  margin: 0 0 148px 0;
+  padding: 0;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: #fff;
+  opacity: 0.5;
+}
+
+.promo__link {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration: none;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 0;
+  opacity: 0.6;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.promo__label {
+  background-image: url('../../images/promo-label-min.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 310px;
+  height: 310px;
+}
+
+.promo__globus {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 310px;
+  height: 310px;
+}
+
+.promo__globus-image {
+  animation: split 10s linear infinite forwards;
+  height: 100%;
+  width: 460px;
+  transform:translateX(0);
+  background-image: url('../../images/propmo-gloubus.svg');
+  background-repeat: no-repeat;
+  display: flex;
+}
+
+.promo__globus-image::before{
+  height: 100%;
+  width: 460px;
+  content: '';
+  background-image: url('../../images/propmo-gloubus.svg');
+  background-repeat: no-repeat;
+  display: block;
+  transform: translateX(-95%);
+}
+
+@media screen and (max-width: 1070px) {
+  .promo__container {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding-top: 140px;
+  }
+
+  .promo__globus {
+    margin-bottom: 43px;
+  }
+
+  .promo__presentation {
+    text-align: center;
+  }
+
+  .promo__title {
+    font-size: 40px;
+    line-height: 50px;
+    margin: 0 auto 22px;
+  }
+
+  .promo__subtitle {
+    max-width: 260px;
+    margin: 0 auto 90px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .promo__container {
+    padding-top: 70px;
+  }
+
+  .promo__label {
+    width: 210px;
+    height: 210px;
+    margin-bottom: 40px;
+  }
+  .promo__presentation {
+    margin-bottom: 30px;
+  }
+
+  .promo__title {
+    max-width: 300px;
+    margin-bottom: 24px;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.04em;
+  }
+
+  .promo__subtitle {
+    font-size: 13px;
+    line-height: 16px;
+    margin-bottom: 80px;
+  }
+}

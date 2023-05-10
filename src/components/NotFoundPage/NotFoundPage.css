@@ -1,0 +1,83 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.not-found__message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  padding-bottom: 13px;
+}
+
+.not-found__status-code {
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 169px;
+}
+
+.not-found__status-message {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.not-found__back-button {
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #4285f4;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  bottom: 60px;
+}
+
+@media screen and (max-height: 340px) and (min-width: 800px) {
+  .not-found__back-button {
+    position: static;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .not-found__message {
+    padding-bottom: 15px;
+  }
+  .not-found__back-button {
+    bottom: 220px;
+  }
+  @media screen and (max-height: 700px) and (min-width: 500px) {
+    .not-found__back-button {
+      position: static;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .not-found__message {
+    padding-bottom: 0;
+  }
+  .not-found__status-code {
+    font-size: 80px;
+    line-height: 97px;
+  }
+  .not-found__status-message {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .not-found__back-button {
+    font-size: 12px;
+    line-height: 15px;
+    bottom: 30px;
+  }
+  @media screen and (max-height: 219px) {
+    .not-found__back-button {
+      position: static;
+    }
+  }
+}

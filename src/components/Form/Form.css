@@ -1,0 +1,113 @@
+.form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.signing {
+  max-height: 560px;
+  max-width: 396px;
+  width: 100%;
+  margin: auto;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.signing__greeting {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #fff;
+  margin: 0 0 40px;
+}
+
+.form__inputs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.form__inputs-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.form__label {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #8b8b8b;
+  margin-bottom: 5px;
+}
+
+.form__input {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  background-color: transparent;
+  padding: 0 0 10px;
+  margin-bottom: 6px;
+  border: none;
+  border-bottom: 1px solid #424242;
+}
+
+.form__input:focus {
+  outline: 1px solid #424242;
+}
+
+.form__error {
+  color: #ee3465;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form__input:invalid {
+  color: #ee3465;
+}
+
+.signing__entry {
+  display: flex;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #8b8b8b;
+}
+
+.signing__entry-link {
+  color: #4285f4;
+  padding: 0 6px;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 500px) {
+  .signing {
+    max-height: none;
+    max-width: 260px;
+    margin: 56px auto 30px;
+    padding: 0;
+  }
+
+  .signing__greeting {
+    margin: 0 auto 80px;
+  }
+
+  .form__submit-button {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .signing__entry {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

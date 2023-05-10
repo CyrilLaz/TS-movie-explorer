@@ -1,0 +1,27 @@
+.toggle {
+  background-color: #ebebeb;
+  flex: 1 1;
+  border-radius: 20px;
+  transition: background-color 0.3s linear;
+}
+
+.toggle::after {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  transition: transform 0.3s linear;
+}
+
+.toggle_active {
+  background-color: #3ddc84;
+}
+
+.toggle_active.toggle::after {
+  transform: translateY(-50%) translateX(22px);
+}
