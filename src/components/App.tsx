@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import React, { DOMElement, useCallback, useEffect, useState } from 'react';
 import { isEmail } from 'validator';
 import {
   Navigate,
@@ -7,36 +7,37 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import useWindowDimensions from '../../hooks/useWindowDimentions';
-import Main from '../Main/Main';
-import MainApi from '../../utils/MainApi';
-import Movie from '../Movie/Movie';
-import SavedMovies from '../SavedMovies/SavedMovies';
+import useWindowDimensions from '../hooks/useWindowDimentions';
+import Main from './Main/Main';
+import MainApi from '../utils/MainApi';
+import Movie from './Movie/Movie';
+import SavedMovies from './SavedMovies/SavedMovies';
 import './App.css';
-import Profile from '../Profile/Profile';
-import MovieNavigation from '../MovieNavigation/MovieNavigation';
-import MainNavigation from '../MainNavigation/MainNavigation';
-import RegisterWithForm from '../RegisterWithForm/RegisterWithForm';
-import LoginWithForm from '../LoginWithForm/LoginWithForm';
-import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import Layout from '../Layout/Layout';
-import { UserContext } from '../../context/userContext';
-import Modal from '../Modal/Modal';
-import { useFormValidator } from '../../hooks/useFormValidator';
-import ProtectedRoute from '../ProtectedRouter/ProtectedRoute';
-import MoviesApi from '../../utils/MoviesApi';
-import searcher from '../../utils/searcher';
-import usePaginator from '../../hooks/usePaginator';
-import useStateIsSave from '../../hooks/useStateIsSave';
+import Profile from './Profile/Profile';
+import MovieNavigation from './MovieNavigation/MovieNavigation';
+import MainNavigation from './MainNavigation/MainNavigation';
+import RegisterWithForm from './RegisterWithForm/RegisterWithForm';
+import LoginWithForm from './LoginWithForm/LoginWithForm';
+import NotFoundPage from './NotFoundPage/NotFoundPage';
+import Layout from './Layout/Layout';
+import { UserContext } from '../context/userContext';
+import Modal from './Modal/Modal';
+import { useFormValidator } from '../hooks/useFormValidator';
+import ProtectedRoute from './ProtectedRouter/ProtectedRoute';
+import MoviesApi from '../utils/MoviesApi';
+import searcher from '../utils/searcher';
+import usePaginator from '../hooks/usePaginator';
+import useStateIsSave from '../hooks/useStateIsSave';
 import {
   paginatorSettings,
   shortMovieDuration,
-} from '../../constants/appSettings';
-import ScrollerToTop from '../ScrollerToTop/ScrollerToTop';
-import useScrollPosition from '../../hooks/useScrollPositions';
+} from '../constants/appSettings';
+import ScrollerToTop from './ScrollerToTop/ScrollerToTop';
+import useScrollPosition from '../hooks/useScrollPositions';
+import { ISearchInputs, TypeRegInput } from '../types/inputs'
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('logged'));
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('logged'));
   const [
     handleValidForm,
     errors,
@@ -59,13 +60,17 @@ function App() {
   const [countColumn, setCountColumn] = useState(0);
   const [isMain, setIsMain] = useState(location.pathname === '/');
   const [isProfile, setIsProfile] = useState(location.pathname === '/profile');
-  const [modalSettings, setModalSettings] = useState({
+  const [modalSettings, setModalSettings] = useState<{
+    isOpen: boolean,
+    message: string,
+    isResponse?: boolean
+  }>({
     isOpen: false,
     message: '',
   });
   const [inputs, setInputs] = useState({});
   const [isEmpty, setIsEmpty] = useState(false);
-  const [searchInputs, setSearchInputs] = useState({});
+  const [searchInputs, setSearchInputs] = useState<ISearchInputs>({ isShortMovie: false, search: '' });
   const [setColumns, setArray, getArray, nextState, isPaginator, resetState] =
     usePaginator(paginatorSettings);
   const [cards, userCards, setCards, setUserCards] = useStateIsSave(); // хук для установки состояний карточек
@@ -73,7 +78,7 @@ function App() {
   const scrollPosition = useScrollPosition();
   const [isScroller, setIsScroller] = useState(false);
   const toggleShortMovie = useCallback(
-    (array) => {
+    (array: { duration: number }[]) => {
       return array.filter((item) =>
         searchInputs.isShortMovie ? item.duration <= shortMovieDuration : item
       );
@@ -81,7 +86,7 @@ function App() {
     [searchInputs.isShortMovie]
   );
   useEffect(() => {
-    setIsScroller(scrollPosition>300);
+    setIsScroller(scrollPosition > 300);
   }, [scrollPosition]);
 
   useEffect(() => {
@@ -115,7 +120,7 @@ function App() {
   function onRegister(e) {
     e.preventDefault();
     toggleButtonDisable(true);
-    const { name, email, password } = inputs;
+    const { name, email, password } = inputs as TypeRegInput;
     MainApi.register(name, email, password)
       .then((res) => {
         if (!res.data) throw res;
@@ -134,8 +139,8 @@ function App() {
         });
       });
   }
-
-  function login(email, password) {
+  // type Ilogin=(email:string, password:string)=>void
+  function login(email: string, password: string) {
     return MainApi.login(email, password)
       .then(async (res) => {
         if (!res.data) throw res;
@@ -162,7 +167,7 @@ function App() {
   function onLogin(e) {
     e.preventDefault();
     toggleButtonDisable(true);
-    const { email, password } = inputs;
+    const { email, password } = inputs as TypeRegInput;
     login(email, password);
   }
 
@@ -234,7 +239,7 @@ function App() {
     resetState();
     MoviesApi.getMovieList()
       .then((data) => {
-        const movies = searcher(data, '' + searchInputs.search).map((elem) => {
+        const movies: [] = searcher(data, '' + searchInputs.search).map((elem) => {
           elem.thumbnail =
             'https://api.nomoreparties.co' + elem.image.formats.thumbnail.url;
           elem.image = 'https://api.nomoreparties.co' + elem.image.url;
@@ -319,7 +324,7 @@ function App() {
     setIsProfile(location.pathname === '/profile');
   }, [location.pathname]);
 
-  function toShowShortMovie(state) {
+  function toShowShortMovie(state:{target:{checked:boolean}}) {
     localStorage.setItem(
       'searchInputs',
       JSON.stringify({
@@ -340,7 +345,9 @@ function App() {
         <div
           className={`App__container${isMain ? ' App__container_main' : ''}`}
         >
-          <ScrollerToTop onClick={()=>{document.querySelector('.App').scrollIntoView({behavior:"smooth"})}} isScroller={isScroller}/>
+          <ScrollerToTop onClick={() => {
+            let element = document.querySelector('.App') as HTMLElement;
+            element.scrollIntoView({ behavior: "smooth" }) }} isScroller={isScroller} />
           <Modal {...modalSettings} close={closeModal} />
           <Routes>
             <Route
