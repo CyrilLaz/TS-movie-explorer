@@ -1,3 +1,5 @@
+import { TypeMovie, TypeUserData } from "../types/data";
+
 const { REACT_APP_BASE_URL = 'http://localhost:3001' } = process.env;
 
 class Api {
@@ -11,14 +13,14 @@ class Api {
     this.options = options;
   }
 
-  _checkResponse(res: Response) {
+  _checkResponse(res: Response): Promise<{data:TypeUserData[]|TypeMovie[]}|{message:string}> {
     if (!res.ok) {
       return Promise.reject(res);
     }
     return res.json();
   }
 
-  login(email: string, password: string): Promise<Response> {
+  login(email: string, password: string) {
     return fetch(`${REACT_APP_BASE_URL}/signin`, {
       method: 'POST',
       headers: {
@@ -29,7 +31,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  register(name: string, email: string, password: string): Promise<Response> {
+  register(name: string, email: string, password: string) {
     return fetch(`${REACT_APP_BASE_URL}/signup`, {
       method: 'POST',
       headers: {
@@ -39,7 +41,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  logout():Promise<Response> {
+  logout() {
     return fetch(`${REACT_APP_BASE_URL}/signout`, {
       method: 'POST',
       headers: {
@@ -49,7 +51,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  updateUser(name:string, email:string):Promise<Response> {
+  updateUser(name:string, email:string){
     return fetch(`${REACT_APP_BASE_URL}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -60,7 +62,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  getUserData():Promise<Response> {
+  getUserData(){
     return fetch(`${REACT_APP_BASE_URL}/users/me`, {
       headers: {
         'Content-Type': 'application/json',
@@ -69,7 +71,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  getUserMovie():Promise<Response> {
+  getUserMovie() {
     return fetch(`${REACT_APP_BASE_URL}/movies`, {
       headers: {
         'Content-Type': 'application/json',
@@ -78,7 +80,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  saveMovie(movie:string):Promise<Response> {
+  saveMovie(movie:string){
     return fetch(`${REACT_APP_BASE_URL}/movies`, {
       method: 'POST',
       headers: {
@@ -89,7 +91,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  deleteMovie(movieId:string):Promise<Response> {
+  deleteMovie(movieId:string){
     return fetch(`${REACT_APP_BASE_URL}/movies/${movieId}`, {
       method: 'DELETE',
       headers: {
