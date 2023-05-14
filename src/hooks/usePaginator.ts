@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
+import { IPaginator } from '../interfaces/Paginator';
 
-function usePaginator(settings) {
-  const [array, setArray] = useState([]);
+function usePaginator(settings: IPaginator[]) {
+  const [array, setArray] = useState<unknown[]>([]);
   const [columns, setColumns] = useState(1);
   const [isPaginator, setIsPaginator] = useState(false);
   const [step, setStep] = useState(0);
@@ -10,7 +11,7 @@ function usePaginator(settings) {
 
   useEffect(() => {
     if (columns) {
-      const config = settings.find((item) => item.columns === columns);
+      const config = settings.find((item) => item.columns === columns)!;
       setFirstState(config.firstState);
       setStep(config.step);
     }
@@ -52,7 +53,7 @@ function usePaginator(settings) {
     return array;
   }, [state, array, firstState]);
 
-  return [setColumns, setArray, getArray, nextState, isPaginator, resetState];
+  return [setColumns, setArray, getArray, nextState, isPaginator, resetState] as const;
 }
 
 export default usePaginator;

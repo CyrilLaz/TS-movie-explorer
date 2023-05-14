@@ -67,7 +67,7 @@ const movieExample = {
   "_id": "646092627385625718b53450"
 }
 
-export type TypeMovieInit = typeof movieExampleInit;
+export type TypeMovieInit<T=unknown> =typeof movieExampleInit&T;
 export type TypeMovie = typeof movieExample;
 
 export type TypeUserData = { _id: string, name: string, email: string };

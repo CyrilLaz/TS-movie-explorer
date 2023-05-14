@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, ChangeEvent } from 'react';
+import { IFormValidator } from '../interfaces/Forms';
 
-export function useFormValidator(mode) {
-  const [errors, setErrors] = useState({});
+export function useFormValidator(mode: IFormValidator[]) {
+  const [errors, setErrors] = useState<{[index:string]:string}>({});
   const [isFormInvalid, setIsFormInvalid] = useState(true);
 
-  const handleValidForm = (event) => {
+  const handleValidForm = (event:ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
     const name = target.name;
     if (mode) {
@@ -17,14 +18,14 @@ export function useFormValidator(mode) {
         }
       }
     }
-    setIsFormInvalid(!target.closest('form').checkValidity());
+    setIsFormInvalid(!target.closest('form')!.checkValidity());
     setErrors({ ...errors, [name]: target.validationMessage });
   };
 
   const resetForm = useCallback(
-    (e, newErrors = {}, newIsFormInvalid = true) => {
+    (e:ChangeEvent<HTMLInputElement>, newErrors = {}, newIsFormInvalid = true) => {
       if (e) {
-        const form = e.target.closest('form');
+        const form = e.target.closest('form')!;
         form.reset();
         form.querySelectorAll('input').forEach((element) => {
           // сбрасываю состояние invalid с инпутов
@@ -39,7 +40,7 @@ export function useFormValidator(mode) {
   );
 
   const toggleButtonDisable = useCallback(
-    (state) => {
+    (state:boolean) => {
       setIsFormInvalid(state);
     },
     [setIsFormInvalid]
@@ -51,5 +52,5 @@ export function useFormValidator(mode) {
     isFormInvalid,
     resetForm,
     toggleButtonDisable,
-  ];
+  ] as const;
 }
