@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { IPaginator } from '../interfaces/Paginator';
+import { TypeMovie } from '../types/data';
 
 function usePaginator(settings: IPaginator[]) {
-  const [array, setArray] = useState<unknown[]>([]);
+  const [array, setArray] = useState<TypeMovie[]|[]>([]);
   const [columns, setColumns] = useState(1);
   const [isPaginator, setIsPaginator] = useState(false);
   const [step, setStep] = useState(0);

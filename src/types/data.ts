@@ -60,14 +60,12 @@ const movieExample = {
   "image": "http://pridur.of",
   "trailerLink": "http://pridurok.com/dsadsa",
   "thumbnail": "http://pridurok.com/dsadsa",
-  "owner": "64608f027385625718b53446",
   "id": 13,
   "nameRU": "самый самый ",
   "nameEN": "best of the best",
-  "_id": "646092627385625718b53450"
 }
 
-export type TypeMovieInit<T=unknown> =typeof movieExampleInit&T;
-export type TypeMovie = typeof movieExample;
+export type TypeMovieInit<T = unknown> = typeof movieExampleInit & T;
+export type TypeMovie<T = unknown> = typeof movieExample & { _id?: string } & T;
 
 export type TypeUserData = { _id: string, name: string, email: string };

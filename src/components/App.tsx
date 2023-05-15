@@ -1,5 +1,5 @@
-import React, { DOMElement, useCallback, useEffect, useState } from 'react';
-import { isEmail } from 'validator';
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
+import isEmail from 'validator';
 import {
   Navigate,
   Route,
@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import useWindowDimensions from '../hooks/useWindowDimentions';
 import Main from './Main/Main';
-import MainApi from '../utils/MainApi';
+import { api as MainApi } from '../utils/MainApi';
 import Movie from './Movie/Movie';
 import SavedMovies from './SavedMovies/SavedMovies';
 import './App.css';
@@ -24,7 +24,7 @@ import { UserContext } from '../context/userContext';
 import Modal from './Modal/Modal';
 import { useFormValidator } from '../hooks/useFormValidator';
 import ProtectedRoute from './ProtectedRouter/ProtectedRoute';
-import MoviesApi from '../utils/MoviesApi';
+import { api as MoviesApi } from '../utils/MoviesApi';
 import searcher from '../utils/searcher';
 import usePaginator from '../hooks/usePaginator';
 import useStateIsSave from '../hooks/useStateIsSave';
@@ -34,9 +34,10 @@ import {
 } from '../constants/appSettings';
 import ScrollerToTop from './ScrollerToTop/ScrollerToTop';
 import useScrollPosition from '../hooks/useScrollPositions';
-import { ISearchInputs, TypeRegInput } from '../types/inputs'
+import { TypeSearchInputs, TypeRegInput } from '../types/inputs'
+import { TypeMovie, TypeMovieInit, TypeUserData } from '../types/data';
 
-function App() {
+function App(): React.JSX.Element { // ??
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('logged'));
   const [
     handleValidForm,
@@ -51,8 +52,8 @@ function App() {
       message: 'Не верный формат для адреса почты',
     },
   ]);
-  const [isPreloader, setShowPreloader] = useState(false);
-  const [user, setUser] = useState({});
+  const [isPreloader, setShowPreloader] = useState<boolean>(false);
+  const [user, setUser] = useState<TypeUserData | {}>({});
   const location = useLocation();
   const navigate = useNavigate();
   const { width } = useWindowDimensions();
@@ -70,7 +71,7 @@ function App() {
   });
   const [inputs, setInputs] = useState({});
   const [isEmpty, setIsEmpty] = useState(false);
-  const [searchInputs, setSearchInputs] = useState<ISearchInputs>({ isShortMovie: false, search: '' });
+  const [searchInputs, setSearchInputs] = useState<TypeSearchInputs>({ isShortMovie: false, search: '' });
   const [setColumns, setArray, getArray, nextState, isPaginator, resetState] =
     usePaginator(paginatorSettings);
   const [cards, userCards, setCards, setUserCards] = useStateIsSave(); // хук для установки состояний карточек
@@ -78,7 +79,7 @@ function App() {
   const scrollPosition = useScrollPosition();
   const [isScroller, setIsScroller] = useState(false);
   const toggleShortMovie = useCallback(
-    (array: { duration: number }[]) => {
+    (array:TypeMovie[]) => {
       return array.filter((item) =>
         searchInputs.isShortMovie ? item.duration <= shortMovieDuration : item
       );
@@ -117,7 +118,7 @@ function App() {
     getInitialData();
   }, [getInitialData]);
 
-  function onRegister(e) {
+  function onRegister(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     toggleButtonDisable(true);
     const { name, email, password } = inputs as TypeRegInput;
@@ -139,8 +140,8 @@ function App() {
         });
       });
   }
-  // type Ilogin=(email:string, password:string)=>void
-  function login(email: string, password: string) {
+
+  function login(email: string, password: string): Promise<void> {
     return MainApi.login(email, password)
       .then(async (res) => {
         if (!res.data) throw res;
@@ -164,14 +165,14 @@ function App() {
       });
   }
 
-  function onLogin(e) {
+  function onLogin(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     toggleButtonDisable(true);
     const { email, password } = inputs as TypeRegInput;
     login(email, password);
   }
 
-  function onLogout() {
+  function onLogout(): Promise<void> {
     return MainApi.logout()
       .then((res) => {
         if (!res) throw res;
@@ -199,7 +200,7 @@ function App() {
       });
   }
 
-  function onUpdateUser(name, email, editMode) {
+  function onUpdateUser(name: string, email: string, editMode: React.SetStateAction<boolean>) {
     return MainApi.updateUser(name, email)
       .then(({ data, ...res }) => {
         if (!data) throw res;
@@ -238,12 +239,13 @@ function App() {
     setShowPreloader(true);
     resetState();
     MoviesApi.getMovieList()
-      .then((data) => {
-        const movies: [] = searcher(data, '' + searchInputs.search).map((elem) => {
-          elem.thumbnail =
-            'https://api.nomoreparties.co' + elem.image.formats.thumbnail.url;
-          elem.image = 'https://api.nomoreparties.co' + elem.image.url;
-          return elem;
+      .then((data: TypeMovieInit[]) => {
+        const movies = searcher<TypeMovieInit>(data, searchInputs.search).map((elem: TypeMovieInit) => {
+          return {
+            ...elem,
+            thumbnail: 'https://api.nomoreparties.co' + elem.image.formats.thumbnail.url,
+            image: 'https://api.nomoreparties.co' + elem.image.url
+          };
         });
         localStorage.setItem('searchMovies', JSON.stringify(movies));
         localStorage.setItem('searchInputs', JSON.stringify(searchInputs));
@@ -261,7 +263,7 @@ function App() {
       });
   }
 
-  function handleSave(card) {
+  function handleSave(card: TypeMovie<{ isLiked?: boolean; created_at?: string; updated_at?: string }>) {
     delete card.created_at;
     delete card.updated_at;
     delete card.isLiked;
@@ -277,7 +279,7 @@ function App() {
       );
   }
 
-  function handleDelete(card) {
+  function handleDelete(card:Required<TypeMovie>) {
     MainApi.deleteMovie(card._id)
       .then((res) => {
         setUserCards((cards) => cards.filter((c) => c.id !== card.id));
@@ -294,14 +296,14 @@ function App() {
     setModalSettings({ isOpen: false, message: '', isResponse: false });
   }
 
-  function catchSearchInputs(e) {
+  function catchSearchInputs(e: ChangeEvent<HTMLInputElement>) {
     setSearchInputs({
       ...searchInputs,
       [e.target.name]: e.target.value,
     });
     handleValidForm(e);
   }
-  function catchFormInputs(e) {
+  function catchFormInputs(e: ChangeEvent<HTMLInputElement>) {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
     handleValidForm(e);
   }
@@ -324,7 +326,7 @@ function App() {
     setIsProfile(location.pathname === '/profile');
   }, [location.pathname]);
 
-  function toShowShortMovie(state:{target:{checked:boolean}}) {
+  function toShowShortMovie(state:ChangeEvent<HTMLInputElement>) {
     localStorage.setItem(
       'searchInputs',
       JSON.stringify({
@@ -346,8 +348,9 @@ function App() {
           className={`App__container${isMain ? ' App__container_main' : ''}`}
         >
           <ScrollerToTop onClick={() => {
-            let element = document.querySelector('.App') as HTMLElement;
-            element.scrollIntoView({ behavior: "smooth" }) }} isScroller={isScroller} />
+            let element = document.querySelector('.App');
+            element!.scrollIntoView({ behavior: "smooth" })
+          }} isScroller={isScroller} />
           <Modal {...modalSettings} close={closeModal} />
           <Routes>
             <Route

@@ -1,14 +1,14 @@
-import { TypeMovie, TypeMovieInit } from "../types/data";
+import { TypeMovie } from "../types/data";
 import { useState, useEffect } from 'react';
 
 function useStateIsSave() {
-  const [savedMovies, setSavedMovies] = useState<TypeMovie[]>([]);
-  const [cards, setCards] = useState<TypeMovieInit[]>([]);
-  const [modifiedCards, setModifiedCards] = useState<TypeMovieInit<{ isLiked?: boolean; _id?: string }>[]>([]);
+  const [savedMovies, setSavedMovies] = useState<TypeMovie<{ isLiked?: boolean; _id?: string }>[]>([]);
+  const [cards, setCards] = useState<TypeMovie[]>([]);
+  const [modifiedCards, setModifiedCards] = useState<TypeMovie<{ isLiked?: boolean; _id?: string }>[]>([]);
 
   useEffect(() => {
     setModifiedCards(
-      cards.map((elem: TypeMovieInit<{ isLiked?: boolean; _id?: string }>) => {
+      cards.map((elem: TypeMovie<{ isLiked?: boolean; _id?: string }>) => {
         const saved = savedMovies.find((card) => card.id === elem.id);
         if (saved) {
           elem.isLiked = true;

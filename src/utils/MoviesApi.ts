@@ -9,7 +9,7 @@ class Api {
     this.headers = headers;
   }
 
-  _checkResponse(res:Response): Promise<any> {
+  _checkResponse(res:Response){
     if (!res.ok) {
       return Promise.reject(res);
     }

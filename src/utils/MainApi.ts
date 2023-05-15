@@ -13,7 +13,7 @@ class Api {
     this.options = options;
   }
 
-  _checkResponse(res: Response): Promise<{data:TypeUserData[]|TypeMovie[]}|{message:string}> {
+  _checkResponse<T=unknown>(res: Response):Promise<{data:T}> {
     if (!res.ok) {
       return Promise.reject(res);
     }
@@ -28,7 +28,7 @@ class Api {
       },
       ...this.options,
       body: JSON.stringify({ password, email }),
-    }).then(this._checkResponse);
+    }).then(this._checkResponse<TypeUserData>);
   }
 
   register(name: string, email: string, password: string) {
@@ -38,7 +38,7 @@ class Api {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name, password, email }),
-    }).then(this._checkResponse);
+    }).then(this._checkResponse<TypeUserData>);
   }
 
   logout() {
@@ -59,7 +59,7 @@ class Api {
       },
       ...this.options,
       body: JSON.stringify({ name, email }),
-    }).then(this._checkResponse);
+    }).then(this._checkResponse<TypeUserData>);
   }
 
   getUserData(){
@@ -68,7 +68,7 @@ class Api {
         'Content-Type': 'application/json',
       },
       ...this.options,
-    }).then(this._checkResponse);
+    }).then(this._checkResponse<TypeUserData>);
   }
 
   getUserMovie() {
@@ -77,10 +77,10 @@ class Api {
         'Content-Type': 'application/json',
       },
       ...this.options,
-    }).then(this._checkResponse);
+    }).then(this._checkResponse<TypeMovie<{_id:string}>[]>);
   }
 
-  saveMovie(movie:string){
+  saveMovie(movie:TypeMovie){
     return fetch(`${REACT_APP_BASE_URL}/movies`, {
       method: 'POST',
       headers: {
@@ -88,7 +88,7 @@ class Api {
       },
       ...this.options,
       body: JSON.stringify(movie),
-    }).then(this._checkResponse);
+    }).then(this._checkResponse<TypeMovie<{_id:string}>>);
   }
 
   deleteMovie(movieId:string){
